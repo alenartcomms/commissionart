@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alena Commission</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,700;1,700&display=swap"
+    rel="stylesheet">
+
+  <!-- Feather Icons -->
+  <script src="https://unpkg.com/feather-icons"></script>
+
+  <!-- My Style -->
+  <link rel="stylesheet" href="css/styl.css">
+
+  <!--Alpine js-->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  <!--app js-->
+  <script src="src/ap.js" async></script>
+
+  <!--midtrans-->
+  <script type="text/javascript"
+  src="https://app.sandbox.midtrans.com/snap/snap.js"
+  data-client-key="SB-Mid-client-HtqALqYKVYRL65IW"></script>
+</head>
+
+<body>
+
+  <!-- Navbar start -->
+  <nav class="navbar" x-data>
+    <a href="#" class="navbar-logo">Alena<span>Commission</span></a>
+
+    <div class="navbar-nav">
+      <a href="#home">Home</a>
+      <a href="#carousel">Latest artwork</a>
+      <a href="#about">ToS</a>
+      <a href="#menu">Menu Style</a>
+      <a href="#products">Pricelist</a>
+      <a href="#testimonials">Customer Review</a>
+
+    </div>
+
+    <div class="navbar-extra">
+      <a href="#" id="search-button"><i data-feather="search"></i></a>
+      <a href="#" id="shopping-cart-button">
+        <i data-feather="shopping-cart"></i>
+        <span class="quantity-badge" x-show="$store.cart.quantity" x-text="$store.cart.quantity"></span>
+      </a>
+      <a href="#" id="hamburger-menu"><i data-feather="menu"></i></a>
+    </div>
+
+    <!-- Search Form start -->
+    <div class="search-form" x-data="{ searchQuery: '' }">
+      <input type="search" id="search-box" placeholder="Search here..." x-model="searchQuery" @input="scrollToMatch">
+      <label for="search-box"><i data-feather="search"></i></label>
+  </div>
+    <!-- Search Form end -->
+
+    <!-- Shopping Cart start -->
+    <div class="shopping-cart">
+      <template x-for="(item, index) in $store.cart.items" x-key="index">
+      <div class="cart-item">
+        <img :src="`img/products/${item.img}`" :alt="item.name">
+        <div class="item-detail">
+          <h3 x-text="item.name"></h3>
+          <div class="item-price">
+            <span x-text="rupiah(item.price)"></span> &times;
+            <button id="remove" @click="$store.cart.remove(item.id)">&minus;</button>
+            <span x-text="item.quantity"></span>
+            <button id="add" @click="$store.cart.add(item)">&plus;</button> &equals;
+            <span x-text="rupiah(item.total)"></span>
+          </div>
+        </div>
+      </div>
+    </template>
+    <h4 x-show="!$store.cart.items.length" style="margin-top: 1rem;">Empty - Item Not Define</h4>
+    <h4 x-show="$store.cart.items.length">Total : <span x-text="rupiah($store.cart.total)"></span></h4>
+
+    <div class="form-container" x-show="$store.cart.items.length">
+      <form action="" id="checkoutForm">
+          <input type="hidden" name="items" x-model="JSON.stringify($store.cart.items)">
+          <input type="hidden" name="total" x-model="$store.cart.total">
+          <h4>Detail Pelanggan</h4>
+          <label for="name">
+              <span>Name</span>
+              <input type="text" name="name" id="name">
+          </label>
+          <label for="email">
+              <span>Email</span>
+              <input type="email" name="email" id="email">
+          </label>
+          <label for="sosmed">
+              <span>sosmed</span>
+              <input type="text" name="sosmed" id="sosmed" autocomplete="off">
+          </label>
+          <button class="checkout-button disabled" type="submit" id="checkout-button" value="checkout">Order on Whatsapp</button>
+      </form>
+    </div>
+    </div>
+    <!-- Shopping Cart end -->
+
+  </nav>
+  <!-- Navbar end -->
+
+ <!-- Hero Start-->
+ <section class="hero" id="home">
+  <main class="content">
+      <h1>Alena Art Commission:</h1>
+      <h1><span> Open</span></h1>
+      <p>Indonesia only</p>
+      <a href="https://www.instagram.com/crzrltodrrltt/profilecard/?igsh=MXRhODkzZm1tMmt1cQ==" class="cta">Instagram</a>
+  </main>
+</section>
+<!--Hero End-->
+
+<!--carousel-->
+<section id="carousel" class="carousel-container">
+  <h2><span>Latest</span> Commission Art Work</h2>
+
+  <div class="carousel">
+    <div class="carousel-track">
+      <img src="img/crsl/1.jpg" alt="Artwork 1">
+      <img src="img/crsl/2.jpg" alt="Artwork 2">
+      <img src="img/crsl/3.jpg" alt="Artwork 3">
+      <img src="img/crsl/4.jpg" alt="Artwork 4">
+      <img src="img/crsl/5.jpg" alt="Artwork 5">
+    </div>
+  </div>
+  <button class="prev" onclick="moveSlide(-1)">&#10094;</button>
+  <button class="next" onclick="moveSlide(1)">&#10095;</button>
+  
+  <style>
+    /* Carousel Container */
+    .carousel-container {
+      position: relative;
+      width: 100%;
+      max-width: 800px; /* Adjust as needed */
+      margin: auto;
+      overflow: hidden;
+    }
+
+    /* Carousel */
+    .carousel {
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+      cursor: grab; /* Make it clear that the user can drag */
+    }
+
+    .carousel-track img {
+      width: 100%;
+      flex: 0 0 100%;
+    }
+
+    /* Ensure images are responsive and maintain the same size */
+    .carousel img {
+      width: 100%;
+      height: auto;
+      max-width: 100%;
+      object-fit: contain; /* Ensures the full image is visible without cropping */
+      display: block;
+    }
+
+    .carousel-container h2 {
+      text-align: center;
+      font-size: 2.6rem;
+      margin-bottom: 3rem;
+    }
+
+    .carousel-container h2 span {
+      color: #602020; /* Warna aksen yang sama dengan section lain */
+    }
+
+    /* Navigation Buttons */
+    button.prev, button.next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    button.prev {
+      left: 10px;
+    }
+
+    button.next {
+      right: 10px;
+    }
+  </style>
+
+  <script>
+    let index = 0;
+    const track = document.querySelector('.carousel-track');
+    const images = document.querySelectorAll('.carousel-track img');
+    const totalImages = images.length;
+
+    function moveSlide(direction) {
+      index += direction;
+      if (index < 0) index = totalImages - 1;
+      if (index >= totalImages) index = 0;
+      track.style.transform = `translateX(-${index * 100}%)`;
+    }
+
+    function nextSlide() {
+      index = (index + 1) % totalImages;
+      track.style.transform = `translateX(-${index * 100}%)`;
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      setInterval(nextSlide, 3000); // Change slide every 3 seconds
+    });
+
+    // For dragging functionality (Mouse + Touch Support)
+    let isDragging = false;
+    let startX;
+    let scrollLeft;
+
+    // Mouse events
+    track.addEventListener('mousedown', (e) => {
+      e.preventDefault(); // Prevent default to avoid unwanted selection
+      isDragging = true;
+      startX = e.pageX - track.offsetLeft;
+      scrollLeft = track.scrollLeft;
+      track.style.cursor = 'grabbing'; // Change cursor to grabbing when dragging
+    });
+
+    track.addEventListener('mouseleave', () => {
+      isDragging = false;
+      track.style.cursor = 'grab'; // Reset cursor when mouse leaves
+    });
+
+    track.addEventListener('mouseup', () => {
+      isDragging = false;
+      track.style.cursor = 'grab'; // Reset cursor after mouse up
+    });
+
+    track.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      e.preventDefault(); // Prevent default to avoid unwanted selection
+      const x = e.pageX - track.offsetLeft;
+      const walk = (x - startX) * 3; // Adjust drag speed
+      track.scrollLeft = scrollLeft - walk;
+    });
+
+    // Touch events for mobile support
+    track.addEventListener('touchstart', (e) => {
+      e.preventDefault(); // Prevent default to avoid unwanted selection
+      isDragging = true;
+      startX = e.touches[0].pageX - track.offsetLeft;
+      scrollLeft = track.scrollLeft;
+      track.style.cursor = 'grabbing'; // Change cursor for touch as well
+    });
+
+    track.addEventListener('touchend', () => {
+      isDragging = false;
+      track.style.cursor = 'grab'; // Reset cursor on touch end
+    });
+
+    track.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+      e.preventDefault(); // Prevent default to avoid unwanted selection
+      const x = e.touches[0].pageX - track.offsetLeft;
+      const walk = (x - startX) * 3; // Adjust drag speed
+      track.scrollLeft = scrollLeft - walk;
+    });
+
+    // Keyboard navigation: Left and Right Arrow Keys
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') {
+        moveSlide(-1);  // Move to the previous slide
+      }
+      if (e.key === 'ArrowRight') {
+        moveSlide(1);  // Move to the next slide
+      }
+    });
+  </script>
+</section>
+
+<!-- Carousel End -->
+
+<!--About Start-->
+<section id="about" class="about">
+  <h2>Terms<span> of</span> Service <span>and </span>payment</h2>
+
+  <div class="row">
+      <div class="about-img">
+          <img src="img/tentang-kami.png" alt="Teh" width="300">
+      </div>
+      <div class="content">
+          <h3>-Payment via BRI or Shopeepay</h3>
+          <p>-Commercial use x3</p>
+          <p>-Pembayaran ketika lineart selesai</p>
+          <p>-No background</p>
+          <p>-Tidak menerima yang berbau 18+</p>
+          <p>-Couple dihitung perkarakter +10k</p>
+          <p>-Karakter detail akan dikenakan biaya tambahan</p>
+          <p>-Additional item +5k-20k</p>
+          <p>-Informasi lebih lanjut bisa langsung ditanyakan melalui akun instagram atau nomor whatsapp yang tertera.</p>
+        </div>
+  </div>
+</section>
+<!--About End -->
+
+  <!-- Menu Section start -->
+  <section id="menu" class="menu">
+    <h2><span>Menu</span> Stlye</h2>
+    <p>Art Style yang Bisa Anda Pilih.
+    </p>
+
+    <div class="row">
+      <div class="menu-card">
+        <img src="img/menu/1.png" alt="chibi" class="menu-card-img">
+        <h3 class="menu-card-title">- Chibi -</h3>
+        <p class="menu-card-price">IDR 20K-60k</p>
+      </div>
+      <div class="menu-card">
+        <img src="img/menu/2.png" alt="normal" class="menu-card-img">
+        <h3 class="menu-card-title">- Normal Style -</h3>
+        <p class="menu-card-price">IDR 45K-75k</p>
+      </div>
+      <div class="menu-card">
+        <img src="img/menu/Comms Nee chan_20250208105821.jpg" alt="idv" class="menu-card-img">
+        <h3 class="menu-card-title">- IDV style -</h3>
+        <p class="menu-card-price">IDR 70K-150K</p>
+      </div>
+    </div>
+  </section>
+  <!-- Menu Section end -->
+
+  <!-- Products Section start -->
+  <section class="products" id="products" x-data="products">
+    <h2><span>Price</span> List</h2>
+    <p>Harga Untuk 1 karakter.</p>
+
+    <div class="row">
+      <template x-for="(item, index) in items" x-key="index">
+      <div class="product-card">
+        <div class="product-icons">
+          <a href="#" @click.prevent="$store.cart.add(item)">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+            <use href="img/feather-sprite.svg#shopping-cart" />
+          </svg>
+          </a>
+          
+        </div>
+        <div class="product-image">
+          <img :src="`img/products/${item.img}`" alt="item.name">
+        </div>
+        <div class="product-content">
+          <h3 x-text="item.name"></h3>
+          <div class="product-stars">
+            <svg width="24" height="24" fill="currentColor" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+            <use href="img/feather-sprite.svg#star" />
+          </svg>
+          <svg width="24" height="24" fill="currentColor" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round">
+          <use href="img/feather-sprite.svg#star" />
+          </svg>
+          <svg width="24" height="24" fill="currentColor" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round">
+          <use href="img/feather-sprite.svg#star" />
+          </svg>
+          <svg width="24" height="24" fill="currentColor" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round">
+          <use href="img/feather-sprite.svg#star" />
+          </svg>
+          <svg width="24" height="24" fill="currentColor" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round">
+          <use href="img/feather-sprite.svg#star" />
+          </svg>
+          </div>
+          <div class="product-price"><span x-text="rupiah(item.price)"></span></div>
+        </div>
+      </div>
+    </template>
+    </div>
+  </section>
+  <!-- Products Section end -->
+
+  <!--customer review-->
+  <section id="testimonials">
+    <div class="testimonial-heading">
+        <h2>Customer <span>Review</span></h2>
+        <p>Clients Says</p>
+    </div>
+    <div class="testimonial-box-container">
+        <div class="testimonial-box">
+            <div class="box-top">
+                <div class="profile">
+                    <div class="profile-img">
+                        <img src="img/cstm/2.jpg" />
+                    </div>
+                    <div class="name-user">
+                        <strong>Kai</strong>
+                        <span>@ouiouiyes_</span>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="client-comment">
+                <p>Pengerjaannya cepet + hasilnya memuaskan heheh (kamu niat bet yah)</p>
+                <p>AKU BINGUNG APALAGI😭</p>
+                <p>Tapi aku selalu puas komis ke kamu</p>
+            </div>
+        </div>
+        <div class="testimonial-box">
+            <div class="box-top">
+                <div class="profile">
+                    <div class="profile-img">
+                        <img src="img/cstm/6.2.png" />
+                    </div>
+                    <div class="name-user">
+                        <strong>Hazu</strong>
+                        <span>@hazumee_</span>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="client-comment">
+                <p>Rating: 10/10⭐</p>
+                <p>Review: hasil coms nya tuh ga pernah mengecewakan mau gimana pun chr design nya, dijamin semuanya jadi cakepp!!!! Dan yang paling waw itu karna Alen sering mastiin ke cust sketch2 nya bahkan dia sediakan beberapa opsi jadi cust bisa langsung pilih mana yang lebih sesuai, atau bahkan minta revisi lagi juga itu gapapa kalo sm Alen, orgnya sabar banget pokoknya! TwT♡ aku jadi ngerasa Alen itu mau benar2 menyesuaikan dengan request nya customer. Selain itu walau Alen lagi sibuk, pengerjaan nya termasuk cepet walaupun sesuai dengan antrian:3</p>
+            </div>
+        </div>
+        <div class="testimonial-box">
+            <div class="box-top">
+                <div class="profile">
+                    <div class="profile-img">
+                        <img src="img/cstm/uhh.png" />
+                    </div>
+                    <div class="name-user">
+                        <strong>Aray</strong>
+                        <span>@akuadrat_art</span>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="client-comment">
+                <p>Nee kan jajan Idv Style yah, art Kamu tuh berasa banget official nyaa 🥹🫶🫶🫶 </p>
+                <p>Aslii, apalagi yang pas Victor Birthday ituhhh KEK AAAAAAA CAKEPPPP 🩷🩷🩷🩷🩷
+                </p>
+            </div>
+        </div>
+
+        <div class="testimonial-box">
+          <div class="box-top">
+              <div class="profile">
+                  <div class="profile-img">
+                      <img src="img/cstm/komisnya Deco_20250220100340.png" />
+                  </div>
+                  <div class="name-user">
+                      <strong>Deco</strong>
+                  </div>
+              </div>
+              
+          </div>
+          <div class="client-comment">
+              <p>Ini sangat bagus sekali🗣🔥🔥🔥🔥🔥 ayo komis disini</p>
+          </div>
+      </div>
+       
+    </div>
+    <style>
+*{
+  margin: 0px;
+  padding: 0px;
+  font-family: poppins;
+  box-sizing: border-box;
+}
+
+.testimonial-heading h2{
+  text-align: center;
+  font-size: 2.6rem;
+  margin-bottom: 3rem;
+}
+.testimonial-heading p{
+  text-align: center;
+  max-width: 30rem;
+  margin: auto;
+  font-weight: 100;
+  line-height: 1.6;
+}
+a{
+  text-decoration: none;
+}
+#testimonials{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width:100%;
+}
+.testimonial-heading{
+  letter-spacing: 1px;
+  margin: 30px 0px;
+  padding: 10px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.testimonial-heading span{
+  color: #602020;
+  margin-bottom: 10px;
+  letter-spacing: 2px;
+  font-size: 2.6rem;
+  margin-bottom: 3rem;
+}
+.testimonial-box-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  width:100%;
+}
+.testimonial-box{
+  width:500px;
+  box-shadow: 2px 2px 30px rgba(0,0,0,0.1);
+  background-color: #ffffff;
+  padding: 20px;
+  margin: 15px;
+  cursor: pointer;
+}
+.profile-img{
+  width:50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 10px;
+}
+.profile-img img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.profile{
+  display: flex;
+  align-items: center;
+}
+.name-user{
+  display: flex;
+  flex-direction: column;
+}
+.name-user strong{
+  color: #3d3d3d;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+}
+.name-user span{
+  color: #979797;
+  font-size: 0.8rem;
+}
+.reviews{
+  color: #f9d71c;
+}
+.box-top{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.client-comment p{
+  font-size: 0.9rem;
+  color: #4b4b4b;
+}
+.testimonial-box:hover{
+  transform: translateY(-10px);
+  transition: all ease 0.3s;
+}
+
+@media(max-width:1060px){
+  .testimonial-box{
+      width:45%;
+      padding: 10px;
+  }
+}
+@media(max-width:790px){
+  .testimonial-box{
+      width:100%;
+  }
+  .testimonial-heading h1{
+      font-size: 1.4rem;
+  }
+}
+@media(max-width:340px){
+  .box-top{
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+  }
+  .reviews{
+      margin-top: 10px;
+  }
+}
+::selection{
+  color: #ffffff;
+  background-color: #252525;
+}
+    </style>
+     <script src='https://kit.fontawesome.com/c8e4d183c2.js'></script>
+  </section>
+  
+
+  
+  <!-- Footer start -->
+  <footer>
+    <div class="socials">
+      <a href="https://www.instagram.com/crzrltodrrltt/profilecard/?igsh=MXRhODkzZm1tMmt1cQ=="><i data-feather="instagram"></i></a>
+      <a href="https://x.com/crzrltodrrlt?t=NDEYYfVdX3Asq_H7kIWxCw&s=09"><i data-feather="twitter"></i></a>
+    </div>
+
+    <div class="links">
+      <a href="#home">Home</a>
+      <a href="#carousel">Latest artwork</a>
+      <a href="#about">ToS</a>
+      <a href="#menu">Menu Style</a>
+      <a href="#products">Pricelist</a>
+    </div>
+
+    <div class="credit">
+      <p>Created by <a href="">Alenaren</a>. | &copy; 2025.</p>
+    </div>
+  </footer>
+  <!-- Footer end -->
+
+  <!-- Modal Box Item Detail start -->
+  <div class="modal" id="item-detail-modal">
+    <div class="modal-container">
+      <a href="#" class="close-icon"><i data-feather="x"></i></a>
+      <div class="modal-content">
+        <img src="img/products/1.jpg" alt="Product 1">
+        <div class="product-content">
+          <h3>Product 1</h3>
+          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Provident, tenetur cupiditate facilis obcaecati
+            ullam maiores minima quos perspiciatis similique itaque, esse rerum eius repellendus voluptatibus!</p>
+          <div class="product-stars">
+            <i data-feather="star" class="star-full"></i>
+            <i data-feather="star" class="star-full"></i>
+            <i data-feather="star" class="star-full"></i>
+            <i data-feather="star" class="star-full"></i>
+            <i data-feather="star"></i>
+          </div>
+          <div class="product-price">IDR 30K <span>IDR 55K</span></div>
+          <a href="#"><i data-feather="shopping-cart"></i> <span>add to cart</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal Box Item Detail end -->
+
+  <!-- Feather Icons -->
+  <script>
+    feather.replace()
+  </script>
+
+  <!-- My Javascript -->
+  <script src="js/script.js"></script>
+</body>
+
+</html>
