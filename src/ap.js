@@ -1,12 +1,12 @@
 document.addEventListener('alpine:init', () => {
     Alpine.data('products', () => ({
         items: [
-            { id: 1, name: 'normal - headshot', img: '4 (2).jpg', price: 45000 },
-            { id: 2, name: 'normal - bust up', img: '4.jpg', price: 55000 },
-            { id: 3, name: 'normal - half body', img: '3.png', price: 75000 },
-            { id: 4, name: 'chibi - head', img: '6.1_20250208110537.png', price: 20000 },
-            { id: 5, name: 'chibi - halfbody', img: '5.png', price: 40000 },
-            { id: 6, name: 'chibi - fullbody', img: '6.png', price: 60000 },
+            { id: 1, name: 'normal - headshot', img: '4 (2).jpg', price: 50000 },
+            { id: 2, name: 'normal - bust up', img: '4.jpg', price: 60000 },
+            { id: 3, name: 'normal - half body', img: '3.png', price: 80000 },
+            { id: 4, name: 'chibi - head', img: '6.1_20250208110537.png', price: 25000 },
+            { id: 5, name: 'chibi - halfbody', img: '5.png', price: 50000 },
+            { id: 6, name: 'chibi - fullbody', img: '6.png', price: 70000 },
             { id: 7, name: 'idv - halfbody', img: 'uhh.png', price: 75000 },
             { id: 8, name: 'idv - fullbody', img: '8.png', price: 150000 },
         ],
