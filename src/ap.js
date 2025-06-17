@@ -6,7 +6,7 @@ document.addEventListener('alpine:init', () => {
             { id: 3, name: 'normal - half body', img: '3.png', price: 80000 },
             { id: 4, name: 'chibi - head', img: '6.1_20250208110537.png', price: 25000 },
             { id: 5, name: 'chibi - halfbody', img: '5.png', price: 50000 },
-            { id: 6, name: 'chibi - fullbody', img: '6.png', price: 70000 },
+            { id: 6, name: 'chibi - fullbody', img: '6.png', price: 65000 },
             { id: 7, name: 'idv - halfbody', img: 'uhh.png', price: 75000 },
             { id: 8, name: 'idv - fullbody', img: '8.png', price: 150000 },
         ],
